@@ -1,141 +1,131 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<script src="./js/mindar-image.prod.js"></script>
-		<script src="./js/aframe.min.js"></script>
-		<script src="./js/mindar-image-aframe.prod.js"></script>
-		<style>
-			#example-scanning-overlay {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				position: absolute;
-				left: 0;
-				right: 0;
-				top: 0;
-				bottom: 0;
-				background: transparent;
-				z-index: 2;
-			}
 
-			@media (min-aspect-ratio: 1/1) {
-				#example-scanning-overlay .inner {
-					width: 50vh;
-					height: 50vh;
-				}
-			}
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="./js/mindar-image.prod.js"></script>
+    <script src="./js/aframe.min.js"></script>
+    <script src="./js/mindar-image-aframe.prod.js"></script>
+    <style>
+        #example-scanning-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 2;
+        }
+        
+        @media (min-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 50vh;
+                height: 50vh;
+            }
+        }
+        
+        @media (max-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 80vw;
+                height: 80vw;
+            }
+        }
+        
+        #example-scanning-overlay .inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(to right, white 10px, transparent 10px) 0 0, linear-gradient(to right, white 10px, transparent 10px) 0 100%, linear-gradient(to left, white 10px, transparent 10px) 100% 0, linear-gradient(to left, white 10px, transparent 10px) 100% 100%, linear-gradient(to bottom, white 10px, transparent 10px) 0 0, linear-gradient(to bottom, white 10px, transparent 10px) 100% 0, linear-gradient(to top, white 10px, transparent 10px) 0 100%, linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+        }
+        
+        #example-scanning-overlay.hidden {
+            display: none;
+        }
+        
+        #example-scanning-overlay img {
+            opacity: 0.6;
+            width: 90%;
+            align-self: center;
+        }
+        
+        #example-scanning-overlay .inner .scanline {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: white;
+            animation: move 2s linear infinite;
+        }
+        
+        @keyframes move {
+            0%,
+            100% {
+                top: 0%
+            }
+            50% {
+                top: calc(100% - 10px)
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const scene = document.querySelector("a-scene")
+            const target = document.querySelector("#first-target")
+                //const video = document.querySelector("#v1")
+                //console.log(video);
 
-			@media (max-aspect-ratio: 1/1) {
-				#example-scanning-overlay .inner {
-					width: 80vw;
-					height: 80vw;
-				}
-			}
+            // scene.addEventListener("arReady", e => {
+            //     console.log("ar is ready");
+            // })
 
-			#example-scanning-overlay .inner {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				position: relative;
+            // scene.addEventListener("arError", e => {
+            //     console.log("ar is error");
+            // })
 
-				background:
-					linear-gradient(to right, white 10px, transparent 10px) 0 0,
-					linear-gradient(to right, white 10px, transparent 10px) 0 100%,
-					linear-gradient(to left, white 10px, transparent 10px) 100% 0,
-					linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
-					linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
-					linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
-					linear-gradient(to top, white 10px, transparent 10px) 0 100%,
-					linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
-				background-repeat: no-repeat;
-				background-size: 40px 40px;
-			}
+            // target.addEventListener("targetFound", e => {
+            //     console.log("target found");
+            //     video.play()
+            // })
 
-			#example-scanning-overlay.hidden {
-				display: none;
-			}
+            // target.addEventListener("targetLost", e => {
+            //     console.log("target lost");
+            //     video.pause()
+            // })
+        })
+    </script>
+</head>
 
-			#example-scanning-overlay img {
-				opacity: 0.6;
-				width: 90%;
-				align-self: center;
-			}
+<body>
+    <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+            <img src="assets/marker2.jpg" />
+            <div class="scanline"></div>
+        </div>
+    </div>
+    <a-scene mindar-image="uiScanning: #example-scanning-overlay; imageTargetSrc: ./assets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-assets>
+            <img id="card" src="./assets/marker2.jpg" />
+            <!-- <video id="v1" src="https://cloudcdn.noitom.com.cn/noitom2/SHOW_CASE/66/度晓晓.mp4"></video> -->
+            <a-asset-item id="avatarModel" src="./assets/bsx/bsx.glb">
+            </a-asset-item>
+        </a-assets>
 
-			#example-scanning-overlay .inner .scanline {
-				position: absolute;
-				width: 100%;
-				height: 10px;
-				background: white;
-				animation: move 2s linear infinite;
-			}
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-			@keyframes move {
+        <a-entity id="first-target" mindar-image-target="targetIndex: 0">
+            <!-- <a-video id="myvideo" src="#v1" width="1"
+					height="0.5625"></a-video> -->
+            <!-- <a-plane src="#card" position="0 0 0" height="0.5" width="1" rotation="0 0 0"></a-plane> -->
+            <!-- <a-gltf-model rotation="90 0 0" position="0 0.3 0" scale="0.5 0.5 0.5" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"> -->
+            <a-entity gltf-model="#avatarModel" animation-mixer></a-entity>
+        </a-entity>
+    </a-scene>
+</body>
 
-				0%,
-				100% {
-					top: 0%
-				}
-
-				50% {
-					top: calc(100% - 10px)
-				}
-			}
-		</style>
-		<script>
-			document.addEventListener("DOMContentLoaded", ()=>{
-				const scene = document.querySelector("a-scene")
-				const target = document.querySelector("#first-target")
-				const video = document.querySelector("#v1")
-				console.log(video);
-
-				scene.addEventListener("arReady", e => {
-					console.log("ar is ready");
-				})
-				
-				scene.addEventListener("arError", e => {
-					console.log("ar is error");
-				})
-				
-				target.addEventListener("targetFound", e => {
-					console.log("target found");
-					video.play()
-				})
-				
-				target.addEventListener("targetLost", e => {
-					console.log("target lost");
-					video.pause()
-				})
-			})
-		</script>
-	</head>
-	<body>
-		<div id="example-scanning-overlay" class="hidden">
-			<div class="inner">
-				<img src="assets/marker2.jpg" />
-				<div class="scanline"></div>
-			</div>
-		</div>
-		<a-scene mindar-image="uiScanning: #example-scanning-overlay; imageTargetSrc: ./assets/targets.mind;"
-			color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-			device-orientation-permission-ui="enabled: false">
-			<a-assets>
-				<img id="card" src="./assets/marker2.jpg" />
-				<video id="v1" src="https://cloudcdn.noitom.com.cn/noitom2/SHOW_CASE/66/度晓晓.mp4"></video>
-				<a-asset-item id="avatarModel" src="./assets/monk/scene.gltf">
-				</a-asset-item>
-			</a-assets>
-
-			<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-			<a-entity id="first-target" mindar-image-target="targetIndex: 0">
-				<a-video id="myvideo" src="#v1" width="1"
-					height="0.5625"></a-video>
-				<!-- <a-plane src="#card" position="0 0 0" height="0.5" width="1" rotation="0 0 0"></a-plane> -->
-				<a-gltf-model rotation="90 0 0" position="0 0.3 0" scale="0.5 0.5 0.5" src="#avatarModel"
-					animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
-			</a-entity>
-		</a-scene>
-	</body>
 </html>
